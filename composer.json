@@ -1,0 +1,29 @@
+{
+    "name": "robertoporceddu/resource-translator",
+    "version": "1.0.0",
+    "require": {
+        "php": "^8.1",
+        "filament/filament": "^3.0",
+        "kenepa/translation-manager": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RobertoPorceddu\\ResourceTranslator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Roberto Porceddu",
+            "email": "robertoporceddu@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RobertoPorceddu\\ResourceTranslator\\ResourceTranslatorServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
