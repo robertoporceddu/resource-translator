@@ -21,8 +21,15 @@ class TranslationGroupMiddleware
         if($action === 'edit') {
             $currentLocale = session()->get('language') ?? app()->getLocale();
             $resource = ($request->route()->action['controller'])::getResource();
+            $model = $resource::getModel();
+
+            // continue if model not have translations
+            if(!method_exists($model, 'translations')) {
+                return $next($request);
+            }
+
             $recordId = $request->route()->parameter('record');
-            $record = $resource::getModel()::withoutGlobalScopes()->find($recordId);
+            $record = $model::withoutGlobalScopes()->find($recordId);
             $currentLanguageRecord = $record->translations()->where('locale', $currentLocale)->first();
 
             // store translation group uuid in session until hit index
