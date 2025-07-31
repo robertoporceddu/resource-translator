@@ -3,6 +3,7 @@
 namespace RobertoPorceddu\ResourceTranslator\Traits\Models;
 
 use Illuminate\Support\Str;
+use Filament\Facades\Filament;
 
 trait HasTranslations
 {
