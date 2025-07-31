@@ -13,9 +13,11 @@ trait HasTranslations
      */
     public static function booted(): void
     {
-        static::addGlobalScope('return_current_locale_records', function ($builder) {
-            $builder->where(static::LOCALE_COLUMN, app()->getLocale());
-        });
+        if(Filament::isServing()) {
+            static::addGlobalScope('return_current_locale_records', function ($builder) {
+                $builder->where(static::LOCALE_COLUMN, app()->getLocale());
+            });
+        }
     }
 
     /**
