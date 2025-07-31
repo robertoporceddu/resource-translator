@@ -33,7 +33,7 @@ A Filament v3 plugin to add multi-language (i18n) support to your Eloquent model
 
 ```bash
 # Install the resource translator plugin
-composer require robertoporceddu/resource-translator
+composer require robertoporceddu/resource-translator:dev-main
 ```
 
 1. **Add the trait to your Eloquent model:**
