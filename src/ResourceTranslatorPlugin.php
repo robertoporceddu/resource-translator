@@ -4,6 +4,7 @@ namespace RobertoPorceddu\ResourceTranslator;
 
 use Filament\Panel;
 use Filament\Contracts\Plugin;
+use Kenepa\TranslationManager\TranslationManagerPlugin;
 use RobertoPorceddu\ResourceTranslator\Http\Middleware\TranslationGroupMiddleware;
 
 class ResourceTranslatorPlugin implements Plugin
@@ -26,7 +27,10 @@ class ResourceTranslatorPlugin implements Plugin
             ])
             ->pages([
                 //
-            ]);
+            ])
+            ->plugin(
+                TranslationManagerPlugin::make()
+            );
 
         if (config('translation-manager.language_switcher')) {
             $panel->authMiddleware([
