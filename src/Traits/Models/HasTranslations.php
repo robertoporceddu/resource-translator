@@ -4,6 +4,7 @@ namespace RobertoPorceddu\ResourceTranslator\Traits\Models;
 
 use Illuminate\Support\Str;
 use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 trait HasTranslations
 {
@@ -41,7 +42,13 @@ trait HasTranslations
 
     public function translations()
     {
-        return $this::withoutGlobalScopes()->where('translation_group_uuid', $this->translation_group_uuid);
+        $query = $this::withoutGlobalScopes();
+
+        if($this::hasGlobalScope(SoftDeletingScope::class)) {
+            $query = $query->withoutTrashed();
+        }
+
+        return $query->where('translation_group_uuid', $this->translation_group_uuid);
     }
 
     public function getTranslationsAttribute()
