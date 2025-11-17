@@ -36,7 +36,9 @@ class TranslationGroupMiddleware
             if($currentLocale !== $record->locale) {
                 // if content does not exist for the current language, redirect to create
                 if(! $currentLanguageRecord) {
-                    return redirect()->to($resource::getUrl('create'))->with(['translation_group_uuid' => $record->translation_group_uuid]);
+                    return redirect()->to(
+                        $resource::getUrl('create') . '?' . http_build_query(['translation_group_uuid' => $record->translation_group_uuid])
+                    );
                 }
 
                 // if content exists for the current language, redirect to it
