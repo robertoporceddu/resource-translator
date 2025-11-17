@@ -29,8 +29,9 @@ trait HasTranslations
     {
         $this->locale = app()->getLocale();
 
-        if(session()->has('translation_group_uuid')) {
-            $this->translation_group_uuid = session()->get('translation_group_uuid');
+        // If the model already exists, preserve its existing translation_group_uuid
+        if ($this->exists) {
+            $this->translation_group_uuid = $this->getOriginal('translation_group_uuid');
         } else {
             $this->translation_group_uuid = Str::uuid()->toString();
         }
