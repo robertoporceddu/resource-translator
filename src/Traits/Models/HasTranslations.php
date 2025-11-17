@@ -32,8 +32,7 @@ trait HasTranslations
         if ($this->exists) {
             $this->translation_group_uuid = $this->getOriginal('translation_group_uuid');
         } else {
-            $this->translation_group_uuid = request()->get('translation_group_uuid')
-                ?? Str::uuid()->toString();
+            $this->translation_group_uuid = $this->translation_group_uuid ?? Str::uuid()->toString();
         }
 
         $result = parent::save($options);

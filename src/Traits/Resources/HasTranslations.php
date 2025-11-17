@@ -2,6 +2,9 @@
 
 namespace RobertoPorceddu\ResourceTranslator\Traits\Resources;
 
+use Filament\Forms\Form;
+use Filament\Forms\Components\Hidden;
+
 trait HasTranslations
 {
     public $changeTranslation = null;
@@ -11,14 +14,14 @@ trait HasTranslations
         $this->redirect(route('translation-manager.switch', [ 'code' => $value ]));
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
+    public function form(Form $form): Form
     {
-        // Include translation_group_uuid from query parameter in form data
-        // request()->get() checks both input() and query() automatically
-        if ($translationGroupUuid = request()->get('translation_group_uuid')) {
-            $data['translation_group_uuid'] = $translationGroupUuid;
-        }
+        $originalSchema = $form->getComponents();
+        $schema = collect($originalSchema)->push(
+            Hidden::make('translation_group_uuid')
+                ->default(request()->get('translation_group_uuid')),
+        );
 
-        return $data;
+        return $form->schema($schema->toArray());
     }
 }
