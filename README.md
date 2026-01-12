@@ -7,22 +7,22 @@
 
 # Resource Translator for Filament
 
-A Filament v3 plugin to add multi-language (i18n) support to your Eloquent models and Filament resources, with an intuitive UI for managing translations.
+A Filament v4 plugin to add multi-language (i18n) support to your Eloquent models and Filament resources, with an intuitive UI for managing translations.
 
 ---
 
 ## Requirements
 
-- [kenepa/translation-manager](https://github.com/kenepa/translation-manager) (used for managing translation files and locales)
-- PHP 8.1+
-- Filament v3
+- PHP 8.2+
+- Filament v4
+- [kenepa/translation-manager](https://github.com/kenepa/translation-manager) ^5.0 (used for managing translation files and locales)
 
 ---
 
 ## Features
 
 - Effortless translation management for Eloquent models
-- Seamless integration with Filament v3 resources and pages
+- Seamless integration with Filament v4 resources and pages
 - Easy switching and editing of translations per resource
 - Simple database structure for translatable resources
 - Compatible with existing Filament workflows
