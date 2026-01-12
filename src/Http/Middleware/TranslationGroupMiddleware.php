@@ -3,8 +3,9 @@
 namespace RobertoPorceddu\ResourceTranslator\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class TranslationGroupMiddleware
@@ -16,29 +17,52 @@ class TranslationGroupMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $action = Str::afterLast($request->route()->action['as'], '.');
+        $route = $request->route();
 
-        if($action === 'edit') {
-            $currentLocale = session()->get('language') ?? app()->getLocale();
-            $resource = ($request->route()->action['controller'])::getResource();
-            $model = $resource::getModel();
+        // Pass through if no route or action information
+        if (! $route || ! isset($route->action['as'])) {
+            return $next($request);
+        }
 
-            // continue if model not have translations
-            if(!method_exists($model, 'translations')) {
+        $action = Str::afterLast($route->action['as'], '.');
+
+        if ($action === 'edit') {
+            // Pass through if no controller is set
+            if (! isset($route->action['controller'])) {
                 return $next($request);
             }
 
-            $recordId = $request->route()->parameter('record');
+            $currentLocale = session()->get('language') ?? app()->getLocale();
+            $controller = $route->action['controller'];
+
+            // Pass through if controller doesn't have getResource method
+            if (! is_string($controller) || ! method_exists($controller, 'getResource')) {
+                return $next($request);
+            }
+
+            $resource = $controller::getResource();
+            $model = $resource::getModel();
+
+            // continue if model not have translations
+            if (! method_exists($model, 'translations')) {
+                return $next($request);
+            }
+
+            $recordId = $route->parameter('record');
             $record = $model::withoutGlobalScopes()->find($recordId);
+
+            // Pass through if record not found
+            if (! $record) {
+                return $next($request);
+            }
+
             $currentLanguageRecord = $record->translations()->where('locale', $currentLocale)->first();
 
             // if current language is not the same as the record language
-            if($currentLocale !== $record->locale) {
+            if ($currentLocale !== $record->locale) {
                 // if content does not exist for the current language, redirect to create
-                if(! $currentLanguageRecord) {
-                    return redirect()->to(
-                        $resource::getUrl('create') . '?' . http_build_query(['translation_group_uuid' => $record->translation_group_uuid])
-                    );
+                if (! $currentLanguageRecord) {
+                    return $this->redirectToCreate($resource, $record->translation_group_uuid);
                 }
 
                 // if content exists for the current language, redirect to it
@@ -47,5 +71,15 @@ class TranslationGroupMiddleware
         }
 
         return $next($request);
+    }
+
+    /**
+     * Redirect to the create page with the translation group UUID.
+     */
+    protected function redirectToCreate(string $resource, string $translationGroupUuid): RedirectResponse
+    {
+        return redirect()->to(
+            $resource::getUrl('create') . '?' . http_build_query(['translation_group_uuid' => $translationGroupUuid])
+        );
     }
 }

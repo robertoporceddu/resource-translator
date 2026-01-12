@@ -2,9 +2,9 @@
 
 namespace RobertoPorceddu\ResourceTranslator\Traits\Models;
 
-use Illuminate\Support\Str;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 trait HasTranslations
 {
@@ -15,7 +15,7 @@ trait HasTranslations
      */
     public static function booted(): void
     {
-        if(Filament::isServing()) {
+        if (Filament::isServing()) {
             static::addGlobalScope('return_current_locale_records', function ($builder) {
                 $builder->where(static::LOCALE_COLUMN, app()->getLocale());
             });

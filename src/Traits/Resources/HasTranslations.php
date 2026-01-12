@@ -2,15 +2,19 @@
 
 namespace RobertoPorceddu\ResourceTranslator\Traits\Resources;
 
-use Filament\Forms\Form;
 use Filament\Forms\Components\Hidden;
+use Filament\Schemas\Components\Form;
 
 trait HasTranslations
 {
-    public $changeTranslation = null;
+    public ?string $changeTranslation = null;
 
     public function updatedChangeTranslation($value)
     {
+        if ($value === null) {
+            return;
+        }
+
         $this->redirect(route('translation-manager.switch', [ 'code' => $value ]));
     }
 

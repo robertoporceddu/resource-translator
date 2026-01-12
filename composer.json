@@ -1,15 +1,28 @@
 {
     "name": "robertoporceddu/resource-translator",
-    "version": "1.0.0",
     "require": {
-        "php": "^8.1",
-        "filament/filament": "^3.0",
-        "kenepa/translation-manager": "^4.0",
-        "spatie/laravel-package-tools": "^1.92"
+        "php": "^8.2",
+        "filament/filament": "^4.0",
+        "kenepa/translation-manager": "^5.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0",
+        "blade-ui-kit/blade-icons": "^1.6",
+        "blade-ui-kit/blade-heroicons": "^2.4"
     },
     "autoload": {
         "psr-4": {
             "RobertoPorceddu\\ResourceTranslator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RobertoPorceddu\\ResourceTranslator\\Tests\\": "tests/",
+            "RobertoPorceddu\\ResourceTranslator\\Tests\\Fixtures\\": "tests/Fixtures/"
         }
     },
     "authors": [
@@ -25,6 +38,16 @@
             ]
         }
     },
-    "minimum-stability": "dev",
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
